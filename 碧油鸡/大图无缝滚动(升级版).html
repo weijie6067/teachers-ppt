@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body{
+			/*background: black;*/
+		}
+		#outer{
+			position: relative;
+			width: 730px;
+			height: 454px;
+			/*overflow: scroll;*/
+			overflow: hidden;
+			margin: 100px auto 0;
+		}
+		#outer img{
+			float: left;
+		}
+		#inner{
+			width: 2920px;
+			height: 454px;
+			overflow: hidden;
+		}
+		#btn{
+			overflow: hidden;
+			position: fixed;
+			top: 500px;
+			left: 854px;
+			/*width: 730px;*/
+			/*margin: 100px auto;*/
+		}
+		#btn span{
+			float: left;
+			width: 20px;
+			height: 20px;
+			font-size: 22px;
+			line-height: 20px;
+			text-align: center;
+			background: gray;
+			margin-left: 10px;
+			border-radius: 50%;
+			color: white;
+			cursor: pointer;
+		}
+		#btn_l,#btn_r{
+			position: fixed;
+			width: 60px;
+			height: 60px;
+			background: rgba(0,0,0,0.4);
+			/*opacity: 0.4;*/
+			font-size: 40px;
+			line-height: 60px;
+			text-align: center;
+			color: white;
+			cursor: pointer;
+		}
+		#btn_l{
+			top: 304px;
+			left: 318px;
+			/*left: 604px;*/
+		}
+		#btn_r{
+			top: 304px;
+			left: 986px;
+			/*left: 1256px;*/
+
+		}
+		#btn #red{
+			background: red;
+		}
+	</style>
+</head>
+<body>
+	<div id="outer">
+		<div id="inner">
+			<img src="1.jpg" alt="">
+			<img src="2.jpg" alt="">
+			<img src="3.jpg" alt="">
+			<img src="1.jpg" alt="">
+		</div>
+		<div id="btn">
+			<span id="red">1</span>
+			<span>2</span>
+			<span>3</span>
+		</div>
+		<div id="btn_l">&lt;</div>
+		<div id="btn_r">&gt;</div>
+	</div>
+	<script>
+	var btns = document.getElementById('btn').getElementsByTagName('span');
+	var img = document.getElementsByTagName('img');
+	var btnl = document.getElementById('btn_l');
+	var btnr = document.getElementById('btn_r');
+	var outer = document.getElementById("outer");
+	var timer = null;
+	var timel = null;
+	var time = null;
+	var r=0;
+	var l=0;
+	function autoR(){
+		console.log("auto:"+r)
+		for(var i=0;i<btns.length;i++){
+			btns[i].style.background = "gray";
+		}
+		scrollR(r);
+		r++;
+		if(r>img.length-2){
+			r=0;
+		}
+		btns[r].style.background = "red";
+	}
+	timer = setInterval(autoR,2500);
+
+	function autoL(){
+		for(var i=0;i<btns.length;i++){
+			btns[i].style.background = "gray";
+		}
+		l--;
+		if(l<=0){
+			l=3;
+		}
+		btns[l-1].style.background = "red";
+		scrollL(l);
+	}
+	// timel = setInterval(autoL,2500);
+	function scrollR(r){
+		// console.log(r);
+		var startr = r*730;
+		var endr = (r+1)*730;
+		// console.log(endr,startr)
+		var speedr = (endr-startr)/20;
+		function moveR(){
+			startr += speedr;
+			outer.scrollLeft = startr;
+			if(startr>=endr){
+				clearInterval(time);
+			}
+		}
+		time = setInterval(moveR,20);
+	}
+	function scrollL(l){
+		// console.log(l);
+		var startl = l*730;
+		var endl = (l-1)*730;
+		// console.log(endl,startl)
+		var speedl = (endl-startl)/20;
+		function moveL(){
+			startl += speedl;
+			outer.scrollLeft = startl;
+			if(startl<=endl){
+				clearInterval(time);
+			}
+		}
+		time = setInterval(moveL,20);
+	}
+	function clear(){
+		clearInterval(timel);
+		clearInterval(timer);
+		clearInterval(time);
+	}
+	btnl.onclick = function(){
+		// clearInterval(timel);
+		// clearInterval(timer);
+		// clearInterval(time);
+		clear();
+		for(var i=0;i<btns.length;i++){
+			btns[i].style.background = "gray";
+		}
+		console.log("l:"+l);
+		l--;
+		if(l<=0){
+			l=3;
+		}
+		btns[l-1].style.background = "red";
+		scrollL(l);
+		r = l-1;
+	}
+	btnr.onclick = function(){
+		// clearInterval(timel);
+		// clearInterval(timer);
+		// clearInterval(time);
+		console.log(r)
+		clear();
+		for(var i=0;i<btns.length;i++){
+			btns[i].style.background = "gray";
+		}
+		scrollR(r);
+		r++;
+		if(r>img.length-2){
+			r=0;
+		}
+		btns[r].style.background = "red";
+	}
+	outer.onmouseleave = function(){
+		// console.log("leave:"+r)
+		// console.log("leave:"+l)
+
+		// alert("chu")
+		timer = setInterval(autoR,2500);
+	}
+	outer.onmouseenter = function(){
+		// alert("ting")
+		clearInterval(timer);
+	}
+	for(var i=0;i<btns.length;i++){
+		btns[i].index = i;
+		btns[i].onclick = function(){
+			for(var i=0;i<btns.length;i++){
+				btns[i].style.background = "gray";
+			}
+			console.log(this.index);
+			scroll(this.index);
+			r = this.index;
+			l = this.index + 1;
+			btns[this.index].style.background = "red";
+		}
+	}
+	function scroll(x){
+		var startx = outer.scrollLeft;
+		var endx = x*730;
+		var speed = (endx - startx)/20;
+		function move(){
+			startx += speed;
+			outer.scrollLeft = startx;
+			if(startx>=endx&&speed>0){
+				clearInterval(time);
+			}
+			if(startx<=endx&&speed<0){
+				clearInterval(time);
+			}
+		}
+		time = setInterval(move,20);
+	}
+	</script>
+</body>
+</html>

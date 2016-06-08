@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>盒模型外边距</title>
+	<style>
+		.aa{
+			width: 100px;
+			height: 100px;
+			background: red;
+			margin: 100px auto;
+			/*margin: 40px 50px 10px;*/
+			/*margin: 30px 50px;*/
+			/*margin: 40px 100px 50px 10px;*/
+			/*margin属性的复合写法 方位顺序是上、右、下、左;
+			如果是三个值：第一个参数表示上，第二个表示左右，第三个表示下；
+			如果是两个值：第一个参数表示上下，第二个表示左右*/
+			/*margin-top: 40px;
+			margin-left: 70px;
+			margin-bottom: 10px;*/
+		}
+		.bb{
+			width: 100px;
+			height: 100px;
+			background: yellow;
+			/*margin-top: 50px;*/
+			display: inline-block;
+			margin-right: 50px;
+		}
+		.cc{
+			width: 100px;
+			height: 100px;
+			background: blue;
+			display: inline-block;
+			margin-left: 100px;
+		}
+	</style>
+</head>
+<body>
+	<div class="aa"></div>
+	<!-- margin属性在竖向上会选取值较大来进行设置 -->
+	<!-- <div class="bb"></div> -->
+	<!-- <div class="cc"></div> -->
+	<!-- margin属性在横向上会把数值相加 -->
+</body>
+</html>
